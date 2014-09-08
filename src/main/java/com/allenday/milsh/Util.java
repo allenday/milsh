@@ -21,7 +21,7 @@ public class Util {
 		return stem(text, 1);
 	}
 	public static List<String> stem(String text, Integer window){
-		Analyzer analyzer = new StandardAnalyzer(Version.LATEST);
+		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_4_10_0);//Version.LATEST);
 		EnglishStemmer english = new EnglishStemmer();
 
 		List<String> buf = new ArrayList<String>();
@@ -39,26 +39,34 @@ public class Util {
 			throw new RuntimeException(e);
 		}
 		analyzer.close();
-		
-//		System.err.println(buf);
-		
+				
 		List<String> result = new ArrayList<String>();
 		for (int i = 0; i < buf.size() - (window - 1); i++) {
 			String b = "";
 			for(int j = 0; j < window; j++) {
-//				System.err.print(buf.get(i+j) + " ");
 				b += buf.get(i+j);
 				if (j < window -1) {
 					b += " ";
 				}
 			}
-//			System.err.println("\n");
 			result.add(b);
 		}
 		return result;    	
 	}
 
-
+	public static String toHexString(FixedBitSet s) {
+		String bb = "";
+		for (int i = 0; i < s.length(); i+=8) {
+			Integer x = (s.get(i)?1:0)*8
+					+ (s.get(i+1)?1:0)*4
+					+ (s.get(i+2)?1:0)*2
+					+ (s.get(i+3)?1:0)*1
+					;
+			bb += hexArray[x];
+		}
+		return bb;
+	}
+	
 	public static String toBitString(FixedBitSet s) {
 		String bb = "";
 		for (int i = 0; i < s.length(); i++) {

@@ -112,7 +112,6 @@ public class LshTable {
 				chunk.clear(0, chunk.length());
 				for (int j = 0; j < step; j++) {
 					if (v.length() < i+j) {
-						//System.err.println(Util.toBitString(v)+" "+(i+j)+"/"+v.length()+" "+registry.get(v));
 					}
 					if (v.get(i+j)) {
 						chunk.set(j);

@@ -44,21 +44,17 @@ public class MinHash {
 		for (int i = 0; i < bitCount; i++) {
 			min = min.setBit(i);			
 		}
-		//System.err.println(min.toString());
 	}
 
 	public BigInteger bitsample(List<String> tokens) {
 		List<BigInteger> mins = hash(tokens);
 		BigInteger lsb = new BigInteger(hashCount,rnd);
-		//System.err.println("hashCount="+hashCount);
 		for (int h = 0; h < hashCount; h++) {
 			lsb = lsb.clearBit(h);
 			if (mins.get(h).testBit(bitCount)) {
-				//System.err.println(localMins.get(h));
 				lsb = lsb.setBit(h);
 			}
 		}
-		//System.err.println(lsb);
 		return lsb;
 	}
 	
@@ -69,7 +65,6 @@ public class MinHash {
 		for (int h = 0; h < hashCount; h++) {
 			BigInteger localMin = min;
 			for (String token : tokens) {
-//				System.err.println(token);
 				try {
 					String jj = new String(token.getBytes("UTF-8"));
 					String kk = new String(token.getBytes("UTF-8"))+h;
@@ -81,13 +76,9 @@ public class MinHash {
 					for (int i = 0; i < bitCount; i++) {
 						res = res.clearBit(i);		
 					}
-//					System.err.println(res);
-//					System.err.println(pow);
 					res = res.add(pow);
-//					System.err.println(res);
 
 					if (res.compareTo(localMin) < 0) {
-//						System.err.println("\t"+res);
 						localMin = res;
 					}
 				} catch (UnsupportedEncodingException e) {
