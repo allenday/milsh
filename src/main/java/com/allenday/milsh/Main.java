@@ -37,7 +37,7 @@ public class Main {
 					if (linesRead % 100 == 0) {
 						System.err.println(linesRead);
 					}
-					if (linesRead > 10000) {
+					if (linesRead > 30000) {
 						break;
 					}
 					linesRead++;
@@ -76,10 +76,16 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws InvalidArgumentException, IOException, InterruptedException {
+		String filename = "/tmp/head1M.txt";
 		if (args.length > 0) {
-			numThreads = Integer.parseInt(args[0]);
+			filename = args[0];
 		}
-		BufferedReader br = new BufferedReader(new FileReader(new File("/tmp/head1M.txt")));
+		if (args.length > 1) {
+			numThreads = Integer.parseInt(args[1]);
+		}
+System.err.println(filename);
+System.err.println(numThreads);
+		BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
 		mh = new MinHash(B, H);
 		table = new LshTable(H, K, R);
 
