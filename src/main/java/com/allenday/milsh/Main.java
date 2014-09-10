@@ -146,6 +146,7 @@ public class Main {
 			if (i % 10000 == 0) {
 				System.err.println(i + "\t" + Runtime.getRuntime().totalMemory());
 			}
+			i++;
 		}
 //		String hex = "AF676F1FF1B517D9";
 		
