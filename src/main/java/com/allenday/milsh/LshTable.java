@@ -111,8 +111,6 @@ public class LshTable {
 				FixedBitSet chunk = new FixedBitSet(step);
 				chunk.clear(0, chunk.length());
 				for (int j = 0; j < step; j++) {
-					if (v.length() < i+j) {
-					}
 					if (v.get(i+j)) {
 						chunk.set(j);
 					}

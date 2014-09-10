@@ -27,7 +27,7 @@ public class Main {
 	private static int linesRead = 0;
 
 	public static int B = 32;
-	public static int H = 128;
+	public static int H = 64; //128
 	public static int K = 32;
 	public static int R = 1;
 	
@@ -129,7 +129,27 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws InvalidArgumentException, IOException, InterruptedException, ExecutionException, TimeoutException {
-		String filename = "/tmp/head1M.txt";
+		mh = new MinHash(B, H);
+		table = new LshTable(H, K, R);
+		
+		String filename = "b3_all_names.minhash";
+		BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
+
+		int i = 0;
+		while (br.ready()) {
+			String[] parts = br.readLine().split("\t");
+			String hex = parts[0];
+			String label = parts[1];
+
+			FixedBitSet v = Util.parseHexString(hex);
+			table.add(v, label);
+			if (i % 10000 == 0) {
+				System.err.println(i + "\t" + Runtime.getRuntime().totalMemory());
+			}
+		}
+//		String hex = "AF676F1FF1B517D9";
+		
+/*		String filename = "/tmp/head1M.txt";
 		if (args.length > 0) {
 			filename = args[0];
 		}
@@ -139,28 +159,25 @@ public class Main {
 System.err.println(filename);
 System.err.println(numThreads);
 		BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
-		mh = new MinHash(B, H);
-		table = new LshTable(H, K, R);
 		
-		/*
-		String q = "South Park: The Stick of Truth";
-		List<String> tokq1 = Util.stem(q, 1);
-		List<String> tokq2 = Util.stem(q, 2);
-		List<String> tokq3 = new ArrayList<String>();
-		tokq3.addAll(tokq1);
-		tokq3.addAll(tokq2);
+//		String q = "South Park: The Stick of Truth";
+//		List<String> tokq1 = Util.stem(q, 1);
+//		List<String> tokq2 = Util.stem(q, 2);
+//		List<String> tokq3 = new ArrayList<String>();
+//		tokq3.addAll(tokq1);
+//		tokq3.addAll(tokq2);
+//
+//		BigInteger bQ = mh.bitsample(tokq3);
+//		FixedBitSet vQ = new FixedBitSet(bQ.bitLength());
+//		for (int i = 0; i < bQ.bitLength(); i++) {
+//			if (bQ.testBit(i)) {
+//				vQ.set(i);
+//			}
+//		}
+//
+//		System.err.println(Util.stem("South Park S10E05.720p WEBRip H264-DEADPOOL[rarbg]".replaceAll("\\.", " "),1));
+//		System.err.println(Util.stem("South Park S10E05.720p WEBRip H264-DEADPOOL[rarbg]".replaceAll("\\.", " "),2));
 
-		BigInteger bQ = mh.bitsample(tokq3);
-		FixedBitSet vQ = new FixedBitSet(bQ.bitLength());
-		for (int i = 0; i < bQ.bitLength(); i++) {
-			if (bQ.testBit(i)) {
-				vQ.set(i);
-			}
-		}
-
-		System.err.println(Util.stem("South Park S10E05.720p WEBRip H264-DEADPOOL[rarbg]".replaceAll("\\.", " "),1));
-		System.err.println(Util.stem("South Park S10E05.720p WEBRip H264-DEADPOOL[rarbg]".replaceAll("\\.", " "),2));
-*/
         ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 
 		List<Thread> threads = new ArrayList<Thread>();
@@ -172,18 +189,18 @@ System.err.println(numThreads);
 		
 		executor.shutdown();
 		executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-/*		
-		System.err.println("done reading");
-
-		Set<FixedBitSet> results = table.search(vQ);
-		TreeMap<Double,String> res = new TreeMap<Double,String>();
-		for (FixedBitSet result : results) {
-			res.put(Util.distance(vQ, result), table.getDocument(result));
-			//			System.err.println(result + " " + Util.distance(vQ, result) + " " + table.getDocument(result) );
-		}
-		for (Double d : res.descendingKeySet()) {
-			System.err.println(d + "\t" + res.get(d));
-		}
+	
+//		System.err.println("done reading");
+//
+//		Set<FixedBitSet> results = table.search(vQ);
+//		TreeMap<Double,String> res = new TreeMap<Double,String>();
+//		for (FixedBitSet result : results) {
+//			res.put(Util.distance(vQ, result), table.getDocument(result));
+//			//			System.err.println(result + " " + Util.distance(vQ, result) + " " + table.getDocument(result) );
+//		}
+//		for (Double d : res.descendingKeySet()) {
+//			System.err.println(d + "\t" + res.get(d));
+//		}
 */
 	}
 }

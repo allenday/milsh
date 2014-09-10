@@ -16,6 +16,11 @@ import org.tartarus.snowball.ext.EnglishStemmer;
 
 public class Util {
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	final protected static String hex= "0123456789ABCDEF";
+	final protected static String[] dehex = {
+		"0000","0001","0010","0011","0100","0101","0110","0111",
+		"1000","1001","1010","1011","1100","1101","1110","1111",
+	};
 
 	public static List<String> stem(String text) {
 		return stem(text, 1);
@@ -52,6 +57,21 @@ public class Util {
 			result.add(b);
 		}
 		return result;    	
+	}
+	
+	public static FixedBitSet parseHexString(String x) {
+		FixedBitSet v = new FixedBitSet(x.length() * 4);
+		
+		int i = 0;
+		for (char c : x.toCharArray()) {
+			String bits = dehex[hex.indexOf(c)];
+			for (char b : bits.toCharArray()) {
+				if (b == '1')
+					v.set(i);
+				i++;
+			}
+		}		
+		return v;
 	}
 
 	public static String toHexString(FixedBitSet s) {
